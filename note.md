@@ -515,3 +515,29 @@ ThreadLocal最常用的地方就是为每个线程绑定一个数据库连接，
 出于效率的考虑，我们可以预编译该正则表达式，接下来重复使用时就不需要编译这个步骤了，直接匹配
 
 编译后生成Regular Expression对象，由于该对象自己包含了正则表达式，所以调用对应的方法时不用给出正则字符串。
+
+# datetime
+
+datetime是Python处理日期和时间的标准库
+
+## datetime转为timestamp
+
+在计算机中，时间实际上是用数字表示的。我们把1970年1月1日 00:00:00 UTC+00:00时区的时刻称为epoch time，记为0（1970年以前的时间timestamp为负数），当前时间就是相对于epoch time的秒数，称为timestamp。
+
+可见timestamp的值与时区毫无关系，因为timestamp一旦确定，其UTC时间就确定了，转换到任意时区的时间也是完全确定的，这就是为什么计算机存储的当前时间是以timestamp表示的，因为全球各地的计算机在任意时刻的timestamp都是完全相同的（假定时间已校准）。
+
+把一个datetime类型转换为timestamp只需要简单调用timestamp()方法
+
+## timestamp转为datetime
+
+要把timestamp转换为datetime，使用datetime提供的fromtimestamp()方法
+
+时区转换的关键在于，拿到一个datetime时，要获知其正确的时区，然后强制设置时区，作为基准时间。
+
+利用带时区的datetime，通过astimezone()方法，可以转换到任意时区。
+
+注：不是必须从UTC+0:00时区转换到其他时区，任何带时区的datetime都可以正确转换，例如上述bj_dt到tokyo_dt的转换。
+
+datetime表示的时间需要时区信息才能确定一个特定的时间，否则只能视为本地时间。
+
+如果要存储datetime，最佳方法是将其转换为timestamp再存储，因为timestamp的值与时区完全无关。
