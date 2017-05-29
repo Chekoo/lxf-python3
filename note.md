@@ -541,3 +541,10 @@ datetime是Python处理日期和时间的标准库
 datetime表示的时间需要时区信息才能确定一个特定的时间，否则只能视为本地时间。
 
 如果要存储datetime，最佳方法是将其转换为timestamp再存储，因为timestamp的值与时区完全无关。
+
+# collections
+
+collections是Python内建的一个模块
+
+## namedtuple
+
