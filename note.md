@@ -619,3 +619,77 @@ pack的第一个参数是处理指令，'>I'的意思是：
 后面的参数个数要和处理指令一致。
 
 unpack把bytes变成相应的数据类型
+
+# hashlib
+
+Python的hashlib提供了常见的摘要算法，如MD5, SHA等等
+
+摘要算法又称哈希算法、散列算法。它通过一个函数，把任意长度的数据转换为一个长度固定的数据串（通常用16进制的字符串表示）
+
+摘要算法就是通过摘要函数f()对任意长度的数据data计算出固定长度的摘要digest，目的是为了发现原始数据是否被人篡改过
+
+摘要算法之所以能指出数据是否被篡改过，就是因为摘要函数是一个单向函数，计算f(data)很容易，但通过digest反推data却非常困难。而且，对原始数据做一个bit的修改，都会导致计算出的摘要完全不同
+
+MD5是最常见的摘要算法，速度很快，生成结果是固定的128 bit字节，通常用一个32位的16进制字符串表示
+
+SHA1的结果是160 bit字节，通常用一个40位的16进制字符串表示
+
+比SHA1更安全的算法是SHA256和SHA512，不过越安全的算法不仅越慢，而且摘要长度更长
+
+有没有可能两个不同的数据通过某个摘要算法得到了相同的摘要？完全有可能，因为任何摘要算法都是把无限多的数据集合映射到一个有限的集合中，这种情况称为碰撞
+
+由于常用口令的MD5值很容易被计算出来，所以，要确保存储的用户口令不是那些已经被计算出来的常用口令的MD5，这一方法通过对原始口令加一个复杂字符串来实现，俗称“加盐”：
+
+```def calc_md5(password):```
+    ```return get_md5(password + 'the-Salt')```
+经过Salt处理的MD5口令，只要Salt不被黑客知道，即使用户输入简单口令，也很难通过MD5反推明文口令。
+
+# itertools
+
+Python內建模块提供了有用的用于操作迭代对象的函数
+
+无限序列虽然可以无限迭代下去，但是通常我们会通过takewhile()等函数根据条件判断来截取出一个有限的序列
+
+chain()可以把一组迭代对象串联起来，形成一个更大的迭代器
+
+groupby()把迭代器中相邻的重复元素挑出来放在一起
+
+itertools模块提供的全部是处理迭代功能的函数，它们的返回值不是list，而是Iterator，只有用for循环迭代的时候才真正计算
+
+# contextlib
+
+并不是只有open()函数返回的fp对象才能使用with语句。实际上，任何对象，只要正确实现了上下文管理，就可以用于with语句。
+
+实现上下文管理是通过__enter__和__exit__这两个方法实现的。例如，下面的class实现了这两个方法：
+
+    class Query(object):
+
+        def __init__(self, name):
+            self.name = name
+
+        def __enter__(self):
+            print('Begin')
+            return self
+
+        def __exit__(self, exc_type, exc_value, traceback):
+            if exc_type:
+                print('Error')
+            else:
+                print('End')
+
+        def query(self):
+            print('Query info about %s...' % self.name)
+这样我们就可以把自己写的资源对象用于with语句：
+
+    with Query('Bob') as q:
+        q.query()
+
+编写__enter__和__exit__仍然很繁琐，因此Python的标准库contextlib提供了更简单的写法
+
+@contextmanager这个decorator接受一个generator，用yield语句把with ... as var把变量输出出去，然后，with语句就可以正常地工作了
+
+如果一个对象没有实现上下文，我们就不能把它用于with语句。这个时候，可以用closing()来把该对象变为上下文对象
+
+closing也是一个经过@contextmanager装饰的generator，这个generator编写起来其实非常简单
+
+的作用就是把任意对象变为上下文对象，并支持with语句
