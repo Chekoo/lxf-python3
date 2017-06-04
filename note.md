@@ -703,3 +703,5 @@ closing也是一个经过@contextmanager装饰的generator，这个generator编�
 # HTMLParser
 
 HTML本质上是XML的子集，但是HTML的语法没有XML那么严格，所以不能用标准的DOM或SAX来解析HTML。
+
+# urllib
