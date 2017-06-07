@@ -28,7 +28,7 @@ height = 60
 image = Image.new('RGB', (width, height), (255, 255, 255))
 
 # 创建Font对象
-font = ImageFont.truetype('Arial.ttf', 36)
+font = ImageFont.truetype('/Library/Font/Arial.ttf', 36)
 
 # 创建Draw对象
 draw = ImageDraw.Draw(image)
@@ -45,3 +45,5 @@ for t in range(4):
 # 模糊
 image = image.filter(ImageFilter.BLUR)
 image.save('code.jpg', 'jpeg')
+
+# 字体错误
