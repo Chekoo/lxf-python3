@@ -705,3 +705,12 @@ closing也是一个经过@contextmanager装饰的generator，这个generator编�
 HTML本质上是XML的子集，但是HTML的语法没有XML那么严格，所以不能用标准的DOM或SAX来解析HTML。
 
 # urllib
+
+urllib的request模块可以非常方便地抓取URL内容，也就是发送一个GET请求到指定的页面，然后返回HTTP的响应
+
+urllib提供的功能就是利用程序去执行各种HTTP请求。如果要模拟浏览器完成特定功能，需要把请求伪装成浏览器。伪装的方法是先监控浏览器发出的请求，再根据浏览器的请求头来伪装，User-Agent头就是用来标识浏览器的
+
+# PIL
+
+PIL：Python Imaging Library，已经是Python平台事实上的图像处理标准库了
+

@@ -1,7 +1,7 @@
 # coding=utf-8
 
 
-from urllib import request
+from urllib import request, parse
 
 
 print('Login to weibo.cn...')
@@ -13,7 +13,7 @@ login_data = parse.urlencode([
     ('entry', 'mweibo'),
     ('client_id', ''),
     ('savestate', '1'),
-    ('ec', '')
+    ('ec', ''),
     ('pagerefer', 'https://password.weibo.cn/signin/welcome?entry=mweibo&r=http%3A%2F')
 ])
 
@@ -25,4 +25,4 @@ with request.urlopen(req, data=login_data.encode('utf-8')) as f:
     print('Status:', f.status, f.reason)
     for k, v in f.getheaders():
         print('%s: %s' % (k, v))
-    print('Data:', data.decode('utf-8'))
+    print('Data:', f.read().decode('utf-8'))
