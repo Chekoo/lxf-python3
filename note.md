@@ -761,3 +761,34 @@ TCP连接创建的是双向通道，双方都可以同时给对方发数据。�
 所以，服务器会打开固定端口（比如80）监听，每来一个客户端连接，就创建该Socket连接。由于服务器会有大量来自客户端的连接，所以，服务器要能够区分一个Socket连接是和哪个客户端绑定的。一个Socket依赖4项：服务器地址、服务器端口、客户端地址、客户端端口来唯一确定一个Socket
 
 但是服务器还需要同时响应多个客户端的请求，所以，每个连接都需要一个新的进程或者新的线程来处理，否则，服务器一次就只能服务一个客户端了
+
+# UDP编程
+
+CP是建立可靠连接，并且通信双方都可以以流的形式发送数据。相对TCP，UDP则是面向无连接的协议
+
+使用UDP协议时，不需要建立连接，只需要知道对方的IP地址和端口号，就可以直接发数据包。但是，能不能到达就不知道了
+
+虽然用UDP传输数据不可靠，但它的优点是和TCP比，速度快，对于不要求可靠到达的数据，就可以使用UDP协议
+
+# 电子邮件
+
+    MUA：Mail User Agent——邮件用户代理
+    MTA：Mail Transfer Agent——邮件传输代理，就是那些Email服务提供商
+    MDA：Mail Delivery Agent——邮件投递代理
+
+__发件人---MUA---MTA---若干个MTA---MDA---MUA---收件人__
+
+要编写程序来发送和接收邮件，本质上就是：
+1. 编写MUA把邮件发到MTA
+2. 编写MUA从MDA上收邮件
+
+发邮件时，MUA和MTA使用的协议就是SMTP：Simple Mail Transfer Protocol，后面的MTA到另一个MTA也是用SMTP协议
+
+收邮件时，MUA和MDA使用的协议有两种：POP：Post Office Protocol，目前版本是3，俗称POP3；IMAP：Internet Message Access Protocol，目前版本是4，优点是不但能取邮件，还可以直接操作MDA上存储的邮件，比如从收件箱移到垃圾箱，等等
+
+# SMTP 
+
+SMTP是发送邮件的协议，Python内置对SMTP的支持，可以发送纯文本邮件、HTML邮件以及带附件的邮件
+
+Python对SMTP支持有smtplib和email两个模块，email负责构造邮件，smtplib负责发送邮件
+
